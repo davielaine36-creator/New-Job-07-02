@@ -19,8 +19,8 @@
     /* A near-invisible cosmic grain: two off-black radial fields that
        give the void depth without ever reading as "busy". */
     background-image:
-      radial-gradient(120% 80% at 50% -10%, #0d0d12 0%, #050506 55%),
-      radial-gradient(60% 50% at 85% 110%, #0b0b10 0%, rgba(5, 5, 6, 0) 60%);
+      radial-gradient(120% 80% at 50% -10%, #16120d 0%, #0c0b0a 55%),
+      radial-gradient(60% 50% at 85% 110%, #13100b 0%, rgba(12, 11, 10, 0) 60%);
     background-attachment: fixed;
   }
 

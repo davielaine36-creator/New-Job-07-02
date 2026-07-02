@@ -4,11 +4,8 @@ excerpt: "On the aesthetics of restraint, and why the most advanced technology s
 publishedAt: "2026-06-21"
 readingTime: 9
 tags: ["Technology", "Design"]
-featureImage:
-  url: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=1600&auto=format&fit=crop"
-  alt: "A dark, distant view of Earth against deep space."
 author:
-  name: "The Author"
+  name: "Elliott Vane"
   role: "Writer & Editor"
 ---
 

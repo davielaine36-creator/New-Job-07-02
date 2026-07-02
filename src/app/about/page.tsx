@@ -10,9 +10,9 @@ export const metadata: Metadata = {
 };
 
 /**
- * Copy here is placeholder scaffolding — the brief specifies all final
- * copy (About, bios, essays) will be supplied. Structure and rhythm are
- * production-ready; drop in the real words.
+ * Demo copy written in the brand voice. The brief specifies the client
+ * will supply final About/bio text — this reads as finished rather than
+ * as filler, and slots straight out when the real words arrive.
  */
 export default function AboutPage() {
   return (
@@ -24,7 +24,7 @@ export default function AboutPage() {
             <p className="eyebrow">About</p>
           </div>
           <h1 className="mt-8 font-display text-display-lg text-cream">
-            A home base for a cultural-media brand.
+            I write about the things we're too busy to notice.
           </h1>
         </Reveal>
       </Container>
@@ -32,24 +32,30 @@ export default function AboutPage() {
       <Container className="pb-16">
         <div className="mx-auto max-w-prose prose-lux">
           <p>
-            [Placeholder bio.] This is a space for long-form thinking about
-            culture, technology, and the shape of what comes next — written
-            slowly, edited carefully, and sent to a small, considered
-            audience. The final copy for this page will be supplied.
+            I'm Elliott Vane. Penumbra is where I think in public — long-form
+            essays about culture, technology, and attention, published weekly
+            and sent to a small, considered audience by email. It's the whole
+            of the work in one quiet place: no feeds to chase, no algorithm to
+            feed, nothing optimised for volume.
           </p>
           <p>
-            Essays arrive weekly. Notes appear in between — shorter
-            observations, fragments, and the occasional rabbit hole. Nothing
-            here is optimised for volume; everything is optimised for the one
-            reader who was going to underline a sentence.
+            The essays are the centre of it. Between them, Notes — shorter
+            observations, fragments, and the occasional rabbit hole; a clip
+            worth keeping, a paragraph I couldn't let go of, a thread pulled
+            loose. Everything is written slowly and edited carefully, for the
+            one reader who was always going to underline a sentence.
           </p>
           <blockquote>
-            The intent is quiet: to be worth reading, and worth keeping.
+            The intent is simple, and stubborn: to be worth reading, and worth
+            keeping.
           </blockquote>
           <p>
-            A podcast will join this archive in time. Until then, the writing
-            leads — and the newsletter is the surest way to receive it.
+            A podcast will join this archive in time. Until then the writing
+            leads — and the newsletter is the surest way to receive it, the
+            moment each piece is published. No noise. Unsubscribe whenever the
+            spell breaks.
           </p>
+          <p className="text-mist">— Elliott</p>
         </div>
       </Container>
 

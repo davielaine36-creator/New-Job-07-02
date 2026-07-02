@@ -16,10 +16,10 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        void: "#050506",      // deepest cosmic black — page base
-        obsidian: "#0a0a0c",  // primary surface
-        onyx: "#101014",      // raised surface / cards
-        graphite: "#1a1a1f",  // hairline dividers, subtle fills
+        void: "#0c0b0a",      // warm off-black — page base (reads luxury, not SaaS)
+        obsidian: "#12100e",  // primary surface
+        onyx: "#1a1713",      // raised surface / cards
+        graphite: "#262019",  // warm hairline dividers, subtle fills
         ivory: "#f4efe6",     // warm reading text
         cream: "#efe7d8",     // headline text on dark
         mist: "#a9a39a",      // muted body / captions

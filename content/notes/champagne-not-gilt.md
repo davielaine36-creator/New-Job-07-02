@@ -4,7 +4,7 @@ excerpt: "There is a difference between wearing gold and being trimmed in it. Th
 publishedAt: "2026-06-04"
 tags: ["Design"]
 author:
-  name: "The Author"
+  name: "Elliott Vane"
 ---
 
 There is a difference between wearing gold and being trimmed in it.

@@ -3,14 +3,14 @@
  * might tweak lives here so copy and metadata are not scattered.
  */
 export const site = {
-  name: "AURELIA", // placeholder brand wordmark — supplied by the brand deck
-  tagline: "A cultural-media brand.",
+  name: "PENUMBRA", // masthead wordmark — final brand supplied by the brand deck
+  tagline: "Essays on culture, technology, and attention.",
   description:
-    "Long-form essays, shorter observations, and a newsletter on culture, technology, and the shape of the future — written with quiet precision.",
+    "Long-form essays, shorter observations, and a weekly newsletter on culture, technology, and the shape of the future — written slowly, with quiet precision.",
   // Set NEXT_PUBLIC_SITE_URL in production (Vercel) for correct canonical/OG URLs.
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://example.com",
   author: {
-    name: "The Author",
+    name: "Elliott Vane",
     role: "Writer & Editor",
     email: "hello@example.com",
   },

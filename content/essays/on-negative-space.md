@@ -5,7 +5,7 @@ publishedAt: "2026-06-14"
 readingTime: 7
 tags: ["Culture", "Craft"]
 author:
-  name: "The Author"
+  name: "Elliott Vane"
   role: "Writer & Editor"
 ---
 

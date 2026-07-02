@@ -19,7 +19,7 @@ export default function OpengraphImage() {
           justifyContent: "space-between",
           padding: 80,
           background:
-            "radial-gradient(120% 80% at 50% -10%, #0d0d12 0%, #050506 60%)",
+            "radial-gradient(120% 80% at 50% -10%, #16120d 0%, #0c0b0a 60%)",
           color: "#efe7d8",
           fontFamily: "Georgia, serif",
         }}

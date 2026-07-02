@@ -4,7 +4,7 @@ excerpt: "You can tell everything about a building from how its front door close
 publishedAt: "2026-06-24"
 tags: ["Observation"]
 author:
-  name: "The Author"
+  name: "Elliott Vane"
 ---
 
 You can tell everything about a building from how its front door closes.

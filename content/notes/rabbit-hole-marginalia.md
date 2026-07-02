@@ -4,7 +4,7 @@ excerpt: "The best conversations with a book happen in its margins. A note on an
 publishedAt: "2026-06-11"
 tags: ["Reading"]
 author:
-  name: "The Author"
+  name: "Elliott Vane"
 ---
 
 I trust a person's margins more than their bookshelf.

@@ -4,7 +4,7 @@ excerpt: "A short film on stillness — thirty seconds that say more than most f
 publishedAt: "2026-06-19"
 tags: ["Film", "Media"]
 author:
-  name: "The Author"
+  name: "Elliott Vane"
 ---
 
 A Note doesn't have to be words. Sometimes the observation *is* the footage — a held shot, a gesture, thirty seconds of something that refuses to hurry.
