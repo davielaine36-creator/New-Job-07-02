@@ -1,8 +1,8 @@
 {
-  "name": "ai-work-radar",
+  "name": "laine-industries-factory-hq",
   "version": "0.1.0",
   "private": true,
-  "description": "AI Work Radar — autonomous, compliance-guarded client-acquisition factory for local service businesses. Next.js 15 (App Router).",
+  "description": "Laine Industries Factory HQ — the autonomous business factory (lead finding → demos → outreach → replies → intake → delivery). AI Work Radar is its first module. Next.js 15 (App Router).",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
