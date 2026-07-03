@@ -1,160 +1,232 @@
-# Circle Health — Website Refresh (Demo)
+# AI Work Radar — Autonomous Client-Acquisition Factory
 
-A design and front-end refresh concept for **circlehealth.co**, built as a
-production-grade **Next.js 15 (App Router, React Server Components)** site.
+A fully automated, **compliance-guarded** agentic system that finds low-level
+local service businesses, audits their web presence, scores fit, generates a
+custom demo/proposal, runs outreach + follow-ups, classifies replies, tracks
+everything in a CRM, and continuously retunes its own targeting — end to end,
+no manual approval queue.
 
-Circle Health puts a team of AI assistants inside the EMR — **Charting,
-Authorization, Review, and Claims** — so behavioral health teams reduce
-denials, protect revenue, and give clinicians their time back. This refresh
-reframes the site around that story with a clean, trustworthy "clinical calm"
-design system and a clear, conversion-focused information architecture.
+It ships in **mock mode first**: the entire loop runs with **zero configuration
+and zero real-world side effects**. Real adapters (database, AI model, lead
+source, email) then switch on **one at a time**.
 
-> **Status:** self-contained demo. Builds and runs with **zero configuration** —
-> Insights content is bundled markdown and the demo form runs in preview mode
-> (captured to logs). Connect Ghost and a delivery webhook to go fully live
-> without touching a single page or component. Copy is illustrative, drawn from
-> public information about Circle Health, for client review.
+> **Hard guardrails, by design.** No Google Maps HTML scraping (official Places
+> API only). No captcha bypass. No fake identities or fabricated relationships.
+> No guaranteed-ranking claims. Every email carries sender identity, a physical
+> mailing address, and a working one-click unsubscribe (CAN-SPAM). Opt-outs,
+> complaints, and bounces are permanently suppressed and can never be re-contacted.
 
 ---
 
-## Quick start
+## The loop
+
+```
+        ┌─────────────┐   ┌──────────┐   ┌──────────┐   ┌──────────┐
+        │ 1 Discovery │──▶│ 2 Audit  │──▶│ 3 Score  │──▶│ 4 Demo   │
+        │  (compliant │   │ (web     │   │ (0-100,  │   │ (custom  │
+        │   sources)  │   │  scoring)│   │  routing)│   │  HTML)   │
+        └─────────────┘   └──────────┘   └──────────┘   └────┬─────┘
+                                                             ▼
+   ┌───────────┐   ┌────────────┐   ┌──────────────┐   ┌───────────┐
+   │ 9 Optimize│◀──│ 8 Classify │◀──│ 6 Compliance │◀──│ 5 Outreach│
+   │ (retune   │   │  replies   │   │  suppression │   │ + follow- │
+   │ targeting)│   │            │   │  (hard stop) │   │   ups     │
+   └───────────┘   └────────────┘   └──────────────┘   └───────────┘
+```
+
+The **orchestrator** (`runTick`) advances every eligible lead through exactly
+one stage per tick. A **cron** (`/api/radar/cron`, every 15 min on Vercel) runs
+ticks autonomously; in mock mode it also simulates inbound replies so the whole
+machine keeps moving on its own.
+
+---
+
+## Quick start (mock mode — nothing to configure)
 
 ```bash
 npm install
-npm run dev          # http://localhost:3000
-npm run build && npm start
-npm run typecheck    # strict TS, no emit
+npm run dev
+# open http://localhost:3000/ops
 ```
 
----
+In the cockpit's top bar:
 
-## Pages
+1. **Seed pipeline** — runs several full ticks with simulated replies and
+   populates discovery → audit → score → demo → outreach → replies → CRM →
+   optimization.
+2. **Run tick** — advance the loop one cycle.
+3. **Simulate replies** — generate more inbound replies to exercise the reply /
+   compliance / optimizer half of the loop.
 
-| Route                     | Purpose                                                            |
-| ------------------------- | ----------------------------------------------------------------- |
-| `/`                       | Home — hero, trust strip, the four assistants, lifecycle, proof, standards, CTA |
-| `/platform`               | Platform overview — lifecycle + all four assistants in depth       |
-| `/platform/[assistant]`   | Product detail: `charting`, `authorization`, `review`, `claims`    |
-| `/security`               | Security & compliance — HIPAA posture, controls, standards         |
-| `/company`                | Mission, story, values, proof                                      |
-| `/insights`               | Thought-leadership blog (behavioral-health RCM), via the CMS layer |
-| `/insights/[slug]`        | Article reading view                                               |
-| `/demo`                   | Request-a-demo page with a working form (`POST /api/demo`)         |
+Or drive it from the API:
 
-Plus SEO/infra routes: `sitemap.xml`, `robots.txt`, `feed.xml` (Insights RSS),
-generated `icon` and `opengraph-image`, and a `404`.
-
----
-
-## Design system — "clinical calm"
-
-Tokens live in `tailwind.config.ts`; component classes and reading typography
-in `src/app/globals.css`.
-
-- **Palette** — clean white/`mist` surfaces; deep teal-navy `ink #0A2A33` text;
-  a confident medical `teal #0E857A` as the brand; bright `aqua #1FB8A6` for the
-  "compliant / positive" moments (checks, highlights); `sky` as an occasional
-  secondary accent. The register is precise and reassuring — software a
-  clinician trusts with a chart.
-- **Type** — **Plus Jakarta Sans** (display) + **Inter** (body), self-hosted via
-  `next/font` for zero layout shift. Swap for a licensed brand family in
-  `src/app/layout.tsx` at handoff if desired.
-- **Motion** — Framer Motion via a single restrained `Reveal` (fade-up on
-  scroll into view); `prefers-reduced-motion` respected globally.
-- **The mark** — an open teal ring with a live aqua node ("the circle of care,
-  closed"), in `src/components/logo.tsx` and the generated favicon/OG. A
-  placeholder for the client's final logo.
-
----
-
-## Architecture
-
-```
-src/
-├─ app/                      # App Router (RSC by default)
-│  ├─ page.tsx               # Home
-│  ├─ platform/              # overview + [assistant] detail pages
-│  ├─ security/ company/ demo/
-│  ├─ insights/              # blog list + [slug] reading view
-│  ├─ api/
-│  │  ├─ demo/               # → demo-request webhook (or preview log)
-│  │  └─ revalidate/         # ← Ghost webhook (on-demand ISR)
-│  ├─ sitemap.ts robots.ts feed.xml/   # SEO + RSS
-│  ├─ icon.tsx opengraph-image.tsx     # generated brand marks
-│  └─ globals.css            # design system + reading typography
-├─ components/               # header, footer, hero visual, cards, forms, icons…
-└─ lib/
-   ├─ site.ts                # brand config & nav (single source of truth)
-   ├─ platform.ts            # the product model — assistants, lifecycle, proof
-   └─ content/               # swappable CMS layer for Insights
-      ├─ types.ts            # ContentSource contract
-      ├─ ghost.ts            # headless Ghost adapter
-      ├─ local.ts            # bundled-markdown adapter (default)
-      └─ index.ts            # picks backend from env
-content/insights/            # sample Insights articles (markdown)
+```bash
+# seed a full pipeline
+curl -X POST localhost:3000/api/radar/seed -d '{"ticks":6,"reset":true}'
+# one tick
+curl -X POST localhost:3000/api/radar/tick -d '{"force":true,"discover":true,"optimize":true}'
+# dashboard metrics
+curl localhost:3000/api/radar/metrics
 ```
 
-**Two decisions worth calling out:**
-
-1. **`src/lib/platform.ts` is the product's single source of truth.** The home
-   page, the platform page, and every `/platform/[assistant]` detail page read
-   the four assistants, the lifecycle, the proof points, and the standards from
-   this one file. Adding an assistant or editing a metric is a one-place change.
-
-2. **The content layer makes the CMS a runtime choice.** Insights read through a
-   `ContentSource` interface (`listPosts`, `getPost`, `getSlugs`), so the backend
-   is swappable — bundled markdown today, headless Ghost in production — with **no
-   page or component change**. Set `GHOST_URL` + `GHOST_CONTENT_API_KEY` and the
-   site reads from Ghost (posts tagged `insight`); add a Ghost webhook →
-   `/api/revalidate` for instant updates.
+Mock data persists to a gitignored `.radar-data/db.json` locally so the pipeline
+survives restarts.
 
 ---
 
-## Performance, SEO & accessibility
+## Enabling real adapters, one at a time
 
-- Server Components + static generation; per-article ISR (`revalidate = 60`).
-- `next/font` self-hosting, minimal client JS (only the header, `Reveal`, and
-  the demo form are client components).
-- Per-page metadata, Open Graph, `sitemap.xml`, `robots.txt`, Insights RSS, and
-  JSON-LD `Article` schema on Insights.
-- Semantic landmarks, skip-link, visible focus rings, labelled form fields,
-  honeypot spam protection, `prefers-reduced-motion`, and WCAG-AA-minded
-  contrast on the light palette.
-- Security headers set in `next.config.mjs`; markdown sanitised
-  (`rehype-sanitize`).
+Everything is behind an adapter that defaults to a mock. Flip `RADAR_MODE=live`
+and fill in a block to promote it. See `.env.example` for the full list.
 
----
+| Capability   | Mock (default)                    | Real adapter            | Env to set |
+|--------------|-----------------------------------|-------------------------|------------|
+| **Database** | in-memory + `.radar-data/db.json` | Supabase (PostgREST)    | `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY` |
+| **AI model** | deterministic templated output    | Anthropic Messages API  | `ANTHROPIC_API_KEY`, `RADAR_AI_MODEL` |
+| **Lead source** | generated business pool        | Google Places (New) API | `GOOGLE_PLACES_API_KEY` |
+| **Email**    | simulated send (logged)           | Resend                  | `RADAR_EMAIL_PROVIDER=resend`, `RESEND_API_KEY`, `RADAR_FROM_EMAIL` |
 
-## Deploy to Vercel
+**Recommended promotion order:** Supabase → Anthropic → Google Places → Resend.
+Each is independent; you can, e.g., run real AI on the mock database.
 
-1. Push this repo and import into Vercel (zero-config `next build`).
-2. Set `NEXT_PUBLIC_SITE_URL` (see `.env.example`).
-3. Point the demo form at your CRM/inbox by setting `DEMO_WEBHOOK_URL`.
-4. (Optional) Connect Ghost for self-serve Insights: set `GHOST_*`, add a
-   `post.*` webhook → `/api/revalidate`.
+### Supabase
 
----
+1. Apply the schema: `supabase/migrations/0001_init.sql` (via the Supabase MCP
+   `apply_migration`, `supabase db push`, or paste into the SQL editor).
+2. Set `SUPABASE_URL` + `SUPABASE_SERVICE_ROLE_KEY`. The app talks to PostgREST
+   over `fetch` — no client library needed.
 
-## Environment variables
+### Autonomous vs manual
 
-See [`.env.example`](./.env.example). Summary:
-
-| Variable                              | Purpose                                      |
-| ------------------------------------- | -------------------------------------------- |
-| `NEXT_PUBLIC_SITE_URL`                | Canonical URL for SEO/OG/sitemap/RSS         |
-| `GHOST_URL`, `GHOST_CONTENT_API_KEY`  | Read Insights from headless Ghost (optional) |
-| `REVALIDATE_SECRET`                   | Secures the Ghost → Next revalidate hook     |
-| `DEMO_WEBHOOK_URL`                    | Delivers demo requests from `/demo`          |
+- `AUTONOMOUS_MODE=true` (default) — the cron runs the whole loop with no
+  approval. There is **no review queue**.
+- `AUTONOMOUS_MODE=false` — the loop won't self-run; use the per-lead buttons or
+  `POST /api/radar/agents/:agent` to exercise agents individually for testing.
 
 ---
 
-## Notes for handoff
+## Database tables (`supabase/migrations/0001_init.sql`)
 
-- **Content** — all product copy lives in `src/lib/platform.ts` and page files;
-  Insights live in `content/insights/*.md`. Customer names and quotes are public
-  references / illustrative and should be confirmed before launch.
-- **Logo & type** — the SVG mark and font pairing are high-quality placeholders;
-  drop in the client's final brand assets in `src/components/logo.tsx` and
-  `src/app/layout.tsx`.
-- **Screenshots** — the hero product visual (`src/components/hero-visual.tsx`) is
-  a pure-CSS mock; swap for a real (de-identified) product screenshot at launch.
+| Table                | Purpose |
+|----------------------|---------|
+| `leads`              | The CRM record + all 7 sub-scores, status, offer level, suppression flags |
+| `audits`             | Per-lead website scoring, top problems, recommended offer |
+| `demos`              | Generated demo (self-contained HTML), proposal, price, preview URL |
+| `outreach_messages`  | Every message: channel, subject/body, send status, sequence step, reply/bounce/unsub flags |
+| `replies`            | Inbound replies: raw text, classified type, summary, recommended action |
+| `suppression_list`   | Permanent do-not-contact (email/domain/phone/name) with reason |
+| `agent_runs`         | Timed, logged execution record for **every** agent run (the audit trail) |
+| `system_settings`    | Operator settings + optimizer-learned priorities |
+
+---
+
+## The eight agents (`src/lib/radar/agents/`)
+
+| # | Agent | What it does |
+|---|-------|--------------|
+| 1 | **Discovery** | Pulls businesses from the active source, dedupes by domain/phone/name, records source provenance. Never scrapes Maps HTML. |
+| 2 | **Audit** | Scores mobile/speed/clarity/CTA/SEO/trust/conversion; emits top-3 problems + recommended offer level. |
+| 3 | **Scoring** | Weighted 0-100 (need 25 / budget 15 / delivery 15 / contactability 15 / demo 15 / fit 10 / local 5) with optimizer multipliers, then routes: ≥80 demo, ≥65 proposal, ≥50 store, else archive. |
+| 4 | **Demo** | Generates a business-specific, self-contained HTML asset (Level 1 refreshed site / Level 2 growth plan) + proposal + price, hosted at a preview URL. |
+| 5 | **Outreach** | Sends the next due message only if: score clears threshold, channel exists, not suppressed, under daily cap, and the message carries identity + address + opt-out. 4-touch sequence (day 0/3/7/14). |
+| 6 | **Compliance** | Hard stop. Opt-out / complaint / bounce → permanent suppression + terminal status + sequence halt. |
+| 7 | **Reply Classifier** | Classifies inbound replies and takes the mapped action (booking link, pricing, scheduling, answer, mark lost, suppress). |
+| 8 | **Optimizer** | Reviews outcomes daily; retunes niche/city priorities, subject order, and selectivity; damps sources that bounce/opt-out. |
+
+Every agent run is wrapped by `withRun(...)`, which times it and writes to
+`agent_runs` (visible under **Agent Runs** in the cockpit).
+
+---
+
+## API
+
+| Method / Route | Purpose |
+|----------------|---------|
+| `POST /api/radar/tick` | Run one full tick (`TickOptions` body) |
+| `GET  /api/radar/cron` | Scheduled entry (Vercel Cron); tick + hourly optimizer + mock reply sim |
+| `POST /api/radar/seed` | Seed a full pipeline (mock) |
+| `POST /api/radar/simulate` | Generate simulated inbound replies (mock) |
+| `POST /api/radar/reset` | Wipe all data (mock; guarded for live) |
+| `GET  /api/radar/metrics` | Dashboard metrics |
+| `GET/POST /api/radar/settings` | Read / update operator settings |
+| `POST /api/radar/agents/:agent` | Run one agent manually (`discovery`, `audit`, `scoring`, `demo`, `outreach`, `reply_classifier`, `compliance`, `optimizer`) |
+| `POST /api/radar/leads/:id/reply` | Inject an inbound reply for classification |
+| `GET  /ops/demos/:id` | Public standalone demo preview (the `demo_preview_url`) |
+| `GET  /unsubscribe?lead=:id` | Public one-click unsubscribe (suppresses permanently) |
+
+Mutating/cron routes honor `RADAR_CRON_SECRET` (Bearer, `x-radar-secret`, or
+`?secret=`); Vercel Cron requests are allowed automatically. With no secret set
+(local mock dev) everything is permitted.
+
+---
+
+## The cockpit (`/ops`)
+
+A dark, high-signal operations console (Next.js App Router, server components):
+
+- **Dashboard** — headline metrics, conversion funnel, compliance/health gauges,
+  niche mix, full pipeline distribution, recent agent runs, pipeline value.
+- **Pipeline** — kanban board across all 18 funnel stages.
+- **Leads** — filterable CRM table → per-lead detail (scores, audit, demo,
+  outreach timeline, replies, and manual agent controls).
+- **Agent Runs** — the live telemetry log.
+- **Settings** — targeting, thresholds, cadence, sender identity, offer ladder,
+  autonomy; shows optimizer-learned priorities read-only.
+
+The legacy **Circle Health** marketing demo still lives at `/`, `/platform`,
+`/company`, `/security`, `/insights` (its own light theme, under the `(site)`
+route group) — unrelated to Radar, kept intact. Its notes moved to
+`docs/circle-health-demo.md`.
+
+---
+
+## What works today (V1)
+
+- Full autonomous loop, end-to-end, in mock mode: discovery → audit → score →
+  demo → outreach → follow-up scheduling → reply classification → compliance
+  suppression → CRM → optimization.
+- Deterministic mock adapters for DB, AI, source, and email (zero-config).
+- Real adapters implemented and swappable: Supabase (PostgREST), Anthropic,
+  Google Places, Resend.
+- All compliance guardrails enforced (identity/address/opt-out on every send,
+  daily cold-send cap, suppression on opt-out/complaint/bounce, no Maps
+  scraping, no fake claims).
+- Self-contained HTML demo generation with hosted preview URLs.
+- Cockpit UI + full REST surface + Vercel cron.
+
+## What is stubbed / intentionally limited
+
+- **Contact-form outreach** is drafted but **not auto-submitted** in live mode
+  (auto-submitting captcha-protected forms would require captcha bypass — which
+  we refuse). Email is fully automated; form-only leads are queued.
+- **Live reply ingestion** (a real inbox → classifier) is not wired; the
+  classifier and the `/leads/:id/reply` endpoint are ready, but an IMAP/webhook
+  poller is future work. Mock mode simulates inbound replies.
+- **Booking** integrates via a scheduling link; there's no calendar API sync yet.
+- The **optimizer** retunes niche/city priorities and selectivity; per-subject-
+  line A/B attribution is a noted next step.
+
+## Next highest-leverage improvement
+
+Wire **live reply ingestion** (Gmail/IMAP webhook → `recordReply`). Outbound is
+already fully automated and compliant; closing the inbound loop makes the system
+truly hands-off — interested prospects get booking links, and opt-outs/complaints
+suppress themselves — with no operator in the path.
+
+---
+
+## Scripts
+
+```bash
+npm run dev        # local dev
+npm run build      # production build
+npm run start      # run the production build
+npm run typecheck  # tsc --noEmit
+npm run lint       # next lint
+```
+
+## Stack
+
+Next.js 15 (App Router) · React 19 · TypeScript · Tailwind · Vercel-ready.
+No database client dependency (Supabase via PostgREST `fetch`); no AI SDK
+dependency (Anthropic via `fetch`).

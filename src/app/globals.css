@@ -190,6 +190,84 @@
   @apply rounded bg-cloud px-1.5 py-0.5 text-[0.9em] text-tealdeep;
 }
 
+/* ═══════════════════════════════════════════════════════════════════════
+   AI Work Radar — dark operations cockpit. Scoped under `.radar` so none of
+   this touches the light marketing site.
+   ═══════════════════════════════════════════════════════════════════════ */
+.radar {
+  @apply bg-radar-bg text-radar-ink font-sans;
+  color-scheme: dark;
+}
+.radar h1,
+.radar h2,
+.radar h3,
+.radar h4 {
+  @apply font-display text-radar-ink;
+}
+.radar ::selection {
+  background: rgba(61, 245, 160, 0.28);
+  color: #eaf1f8;
+}
+.radar :focus-visible {
+  outline: 2px solid theme("colors.radar.signal");
+  outline-offset: 2px;
+}
+
+@layer components {
+  .r-panel {
+    @apply rounded-xl border border-radar-line bg-radar-surface;
+  }
+  .r-panel-raised {
+    @apply rounded-lg border border-radar-line bg-radar-raised;
+  }
+  .r-btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg px-3.5 py-2
+           text-[13px] font-semibold transition-colors duration-150
+           disabled:opacity-40 disabled:pointer-events-none;
+  }
+  .r-btn-primary {
+    @apply r-btn bg-radar-signal text-[#04140c] hover:bg-radar-signal-deep;
+  }
+  .r-btn-outline {
+    @apply r-btn border border-radar-line-strong text-radar-ink hover:border-radar-signal hover:text-radar-signal;
+  }
+  .r-btn-ghost {
+    @apply r-btn text-radar-mute hover:text-radar-ink hover:bg-radar-overlay;
+  }
+  .r-btn-danger {
+    @apply r-btn border border-radar-rose/40 text-radar-rose hover:bg-radar-rose/10;
+  }
+  .r-input {
+    @apply w-full rounded-lg border border-radar-line bg-radar-raised px-3 py-2 text-[13px]
+           text-radar-ink placeholder:text-radar-faint focus:border-radar-signal focus:outline-none;
+  }
+  .r-label {
+    @apply block text-[11px] font-semibold uppercase tracking-[0.12em] text-radar-faint mb-1.5;
+  }
+  .r-eyebrow {
+    @apply text-[11px] font-bold uppercase tracking-[0.16em] text-radar-signal;
+  }
+  .r-chip {
+    @apply inline-flex items-center gap-1.5 rounded-md border border-radar-line
+           bg-radar-raised px-2 py-0.5 text-[11px] font-medium text-radar-mute;
+  }
+  .r-metric {
+    @apply font-mono text-radar-ink;
+  }
+}
+
+@layer utilities {
+  .r-grid-bg {
+    background-image:
+      linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+  .r-scan {
+    background: linear-gradient(90deg, transparent, rgba(61, 245, 160, 0.5), transparent);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

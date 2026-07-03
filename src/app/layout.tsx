@@ -1,17 +1,16 @@
 import type { Metadata, Viewport } from "next";
-import { Plus_Jakarta_Sans, Inter } from "next/font/google";
-import { site } from "@/lib/site";
-import { SiteHeader } from "@/components/site-header";
-import { SiteFooter } from "@/components/site-footer";
+import { Plus_Jakarta_Sans, Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 
 /**
- * Typefaces.
- *   - Plus Jakarta Sans → a modern humanist display sans: friendly, precise,
- *     and credible — the right register for clinical software.
- *   - Inter             → a neutral workhorse for body copy and UI.
- * Both are self-hosted via next/font (zero layout shift). Swap for a licensed
- * brand family at handoff if desired — see README.
+ * Root shell for the whole app. Deliberately minimal: it only wires fonts and
+ * the base stylesheet, then hands off to route-group layouts.
+ *
+ *   (site)/  → the light Circle Health marketing demo (its own header/footer)
+ *   ops/     → the AI Work Radar operations cockpit (dark shell)
+ *
+ * Keeping chrome out of the root lets those two experiences look nothing alike
+ * while sharing one deployment.
  */
 const display = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -26,37 +25,26 @@ const sans = Inter({
   display: "swap",
 });
 
+const mono = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-mono",
+  display: "swap",
+  weight: ["400", "500", "600", "700"],
+});
+
 export const metadata: Metadata = {
-  metadataBase: new URL(site.url),
   title: {
-    default: `${site.name} — ${site.tagline}`,
-    template: `%s · ${site.name}`,
+    default: "AI Work Radar — Autonomous client-acquisition factory",
+    template: "%s · AI Work Radar",
   },
-  description: site.description,
-  openGraph: {
-    type: "website",
-    siteName: site.name,
-    title: `${site.name} — ${site.tagline}`,
-    description: site.description,
-    url: site.url,
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: `${site.name} — ${site.tagline}`,
-    description: site.description,
-  },
-  robots: { index: true, follow: true },
-  alternates: {
-    canonical: "/",
-    types: {
-      "application/rss+xml": `${site.url}/feed.xml`,
-    },
-  },
+  description:
+    "AI Work Radar is an autonomous, compliance-guarded client-acquisition factory for local service businesses: discovery → audit → score → demo → outreach → follow-up → CRM → optimization.",
+  robots: { index: false, follow: false },
 };
 
 export const viewport: Viewport = {
-  themeColor: "#0A5F57",
-  colorScheme: "light",
+  themeColor: "#07090c",
+  colorScheme: "light dark",
 };
 
 export default function RootLayout({
@@ -65,20 +53,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${display.variable} ${sans.variable}`}>
-      <body className="min-h-screen flex flex-col bg-canvas">
-        <a
-          href="#main"
-          className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-4 focus:left-4 focus:btn-primary"
-        >
-          Skip to content
-        </a>
-        <SiteHeader />
-        <main id="main" className="flex-1">
-          {children}
-        </main>
-        <SiteFooter />
-      </body>
+    <html
+      lang="en"
+      className={`${display.variable} ${sans.variable} ${mono.variable}`}
+    >
+      <body className="min-h-screen">{children}</body>
     </html>
   );
 }

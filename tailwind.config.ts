@@ -31,10 +31,33 @@ const config: Config = {
         mist: "#F3F8F7", // alt section background
         cloud: "#E9F2F0", // raised tint / subtle fills
         line: "#DBE7E5", // hairline borders
+
+        // ── AI Work Radar cockpit (dark "dark factory" console) ──────────
+        // A serious, high-signal operations UI: near-black carbon surfaces,
+        // a phosphor-green "signal" accent for live/positive states, and a
+        // small status ramp used across the pipeline and metrics.
+        radar: {
+          bg: "#07090C", // page base — near black with a cool cast
+          surface: "#0C1016", // panels / cards
+          raised: "#111722", // raised rows, inputs
+          overlay: "#161E2B", // popovers, hover fills
+          line: "#1E2836", // hairline borders
+          "line-strong": "#2A3646",
+          ink: "#EAF1F8", // primary text
+          mute: "#9DB0C4", // secondary text
+          faint: "#5C6E82", // metadata / disabled
+          signal: "#3DF5A0", // primary accent — live / positive / go
+          "signal-deep": "#12B877",
+          cyan: "#38E1FF", // data / AI accent
+          amber: "#FFC24B", // caution / pending
+          rose: "#FF5D73", // error / suppressed / lost
+          violet: "#9C7CFF", // demos / creative
+        },
       },
       fontFamily: {
         display: ["var(--font-display)", "system-ui", "sans-serif"],
         sans: ["var(--font-sans)", "system-ui", "sans-serif"],
+        mono: ["var(--font-mono)", "ui-monospace", "SFMono-Regular", "monospace"],
       },
       fontSize: {
         "display-xl": [
@@ -82,10 +105,20 @@ const config: Config = {
           "0%, 100%": { transform: "translateY(0)" },
           "50%": { transform: "translateY(-6px)" },
         },
+        "pulse-signal": {
+          "0%, 100%": { opacity: "1", boxShadow: "0 0 0 0 rgba(61,245,160,0.5)" },
+          "50%": { opacity: "0.7", boxShadow: "0 0 0 6px rgba(61,245,160,0)" },
+        },
+        "sweep": {
+          "0%": { transform: "translateX(-100%)" },
+          "100%": { transform: "translateX(100%)" },
+        },
       },
       animation: {
         "fade-up": "fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both",
         float: "float 6s ease-in-out infinite",
+        "pulse-signal": "pulse-signal 2s ease-in-out infinite",
+        sweep: "sweep 1.6s ease-in-out infinite",
       },
     },
   },
