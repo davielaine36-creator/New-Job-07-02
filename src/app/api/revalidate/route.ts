@@ -23,12 +23,11 @@ export async function POST(request: Request) {
   }
 
   // Revalidate the high-traffic surfaces. (Ghost's payload could be used
-  // to target a single slug; refreshing the archives + home is cheap.)
-  for (const path of ["/", "/essays", "/notes"]) {
+  // to target a single slug; refreshing the index + home is cheap.)
+  for (const path of ["/", "/insights"]) {
     revalidatePath(path);
   }
-  revalidatePath("/essays/[slug]", "page");
-  revalidatePath("/notes/[slug]", "page");
+  revalidatePath("/insights/[slug]", "page");
 
   return NextResponse.json({ revalidated: true });
 }

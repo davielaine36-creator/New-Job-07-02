@@ -5,8 +5,8 @@ export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 export const alt = `${site.name} — ${site.tagline}`;
 
-// Default social card. Deep void, a hairline gold rule, and the wordmark —
-// the same restraint as the site, so shared links feel of a piece.
+// Default social card — light, clean, and on-brand: teal mark, ink headline,
+// aqua underline. Mirrors the site so shared links feel of a piece.
 export default function OpengraphImage() {
   return new ImageResponse(
     (
@@ -19,28 +19,42 @@ export default function OpengraphImage() {
           justifyContent: "space-between",
           padding: 80,
           background:
-            "radial-gradient(120% 80% at 50% -10%, #16120d 0%, #0c0b0a 60%)",
-          color: "#efe7d8",
-          fontFamily: "Georgia, serif",
+            "radial-gradient(60% 60% at 15% 0%, #e4f2f0 0%, #ffffff 60%)",
+          color: "#0A2A33",
+          fontFamily: "sans-serif",
         }}
       >
-        <div
-          style={{
-            fontSize: 26,
-            letterSpacing: 10,
-            color: "#d8bd8a",
-            textTransform: "uppercase",
-          }}
-        >
-          {site.name}
-        </div>
-        <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
-          <div style={{ width: 120, height: 1, background: "#c9a86a" }} />
-          <div style={{ fontSize: 72, lineHeight: 1.05, maxWidth: 900 }}>
-            Quiet power, precisely written.
+        <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
+          <svg width="48" height="48" viewBox="0 0 32 32">
+            <circle
+              cx="16"
+              cy="16"
+              r="11"
+              fill="none"
+              stroke="#0E857A"
+              strokeWidth="4"
+              strokeLinecap="round"
+              strokeDasharray="55 30"
+              transform="rotate(128 16 16)"
+            />
+            <circle cx="26" cy="12" r="4" fill="#1FB8A6" />
+          </svg>
+          <div style={{ display: "flex", fontSize: 34, fontWeight: 800 }}>
+            <span>Circle</span>
+            <span style={{ color: "#0E857A" }}>Health</span>
           </div>
         </div>
-        <div style={{ fontSize: 24, color: "#a9a39a" }}>{site.tagline}</div>
+
+        <div style={{ display: "flex", flexDirection: "column", gap: 28 }}>
+          <div style={{ fontSize: 66, lineHeight: 1.04, maxWidth: 960, fontWeight: 800 }}>
+            A team of AI assistants inside your EMR.
+          </div>
+          <div style={{ width: 160, height: 6, background: "#1FB8A6", borderRadius: 6 }} />
+        </div>
+
+        <div style={{ fontSize: 26, color: "#3F5A64" }}>
+          AI for behavioral health UR &amp; QA
+        </div>
       </div>
     ),
     size

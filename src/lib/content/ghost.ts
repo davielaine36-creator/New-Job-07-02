@@ -16,8 +16,7 @@ import type {
  *   GHOST_CONTENT_API_KEY=xxxxxxxxxxxxxxxxxxxxxxxxxx
  *
  * Content mapping:
- *   - Essays are Ghost posts tagged `essay` (or untagged posts).
- *   - Notes are Ghost posts tagged `note`.
+ *   - Insights are Ghost posts tagged `insight`.
  * A non-technical author publishes and edits everything in Ghost admin;
  * this front-end reads from the Content API and revalidates on a timer
  * (see `revalidate` below) or via a Ghost webhook → Next revalidate route.
@@ -35,7 +34,7 @@ export function ghostConfigured(): boolean {
 }
 
 function tagFor(type: ContentType) {
-  return type; // "essay" | "note"
+  return type; // "insight"
 }
 
 interface GhostPost {

@@ -1,35 +1,38 @@
 import type { MetadataRoute } from "next";
 import { content } from "@/lib/content";
 import { site } from "@/lib/site";
+import { assistants } from "@/lib/platform";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [essays, notes] = await Promise.all([
-    content.listPosts("essay"),
-    content.listPosts("note"),
-  ]);
+  const insights = await content.listPosts("insight");
 
-  const staticRoutes = ["", "/essays", "/notes", "/about", "/work-with-me", "/subscribe"].map(
-    (path) => ({
-      url: `${site.url}${path}`,
-      lastModified: new Date(),
-      changeFrequency: "weekly" as const,
-      priority: path === "" ? 1 : 0.7,
-    })
-  );
+  const staticRoutes = [
+    "",
+    "/platform",
+    "/security",
+    "/insights",
+    "/company",
+    "/demo",
+  ].map((path) => ({
+    url: `${site.url}${path}`,
+    lastModified: new Date(),
+    changeFrequency: "weekly" as const,
+    priority: path === "" ? 1 : 0.7,
+  }));
 
-  const essayRoutes = essays.map((p) => ({
-    url: `${site.url}/essays/${p.slug}`,
-    lastModified: new Date(p.publishedAt),
+  const platformRoutes = assistants.map((a) => ({
+    url: `${site.url}/platform/${a.slug}`,
+    lastModified: new Date(),
     changeFrequency: "monthly" as const,
     priority: 0.8,
   }));
 
-  const noteRoutes = notes.map((p) => ({
-    url: `${site.url}/notes/${p.slug}`,
+  const insightRoutes = insights.map((p) => ({
+    url: `${site.url}/insights/${p.slug}`,
     lastModified: new Date(p.publishedAt),
     changeFrequency: "monthly" as const,
-    priority: 0.5,
+    priority: 0.6,
   }));
 
-  return [...staticRoutes, ...essayRoutes, ...noteRoutes];
+  return [...staticRoutes, ...platformRoutes, ...insightRoutes];
 }

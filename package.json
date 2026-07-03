@@ -1,8 +1,8 @@
 {
-  "name": "personal-media-site",
+  "name": "circle-health-refresh",
   "version": "0.1.0",
   "private": true,
-  "description": "Ultra-premium personal media website — futuristic dark-luxury minimalism.",
+  "description": "Circle Health website refresh — AI assistants for behavioral health UR & QA. Next.js 15 (App Router).",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

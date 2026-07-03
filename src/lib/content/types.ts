@@ -3,11 +3,11 @@
  *
  * The front-end reads only through these types, so the CMS can be
  * swapped (local markdown → headless Ghost → Sanity) without any page
- * or component change. A future "Listen" section adds an `Episode`
- * type alongside these — the same adapter pattern applies.
+ * or component change. Adding a new content type (e.g. "case-study")
+ * is additive — the same adapter pattern applies.
  */
 
-export type ContentType = "essay" | "note";
+export type ContentType = "insight";
 
 export interface Author {
   name: string;
@@ -30,7 +30,7 @@ export interface Post {
   excerpt: string;
   /** ISO 8601 publish date. */
   publishedAt: string;
-  /** Estimated reading time in minutes (essays only, optional for notes). */
+  /** Estimated reading time in minutes. */
   readingTime?: number;
   featureImage?: PostImage;
   tags?: string[];

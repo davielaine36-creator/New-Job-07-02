@@ -1,14 +1,19 @@
-# Ultra-Premium Personal Media Website
+# Circle Health — Website Refresh (Demo)
 
-A custom **Next.js 15 (App Router, Server Components)** front-end for a
-cultural-media brand — long-form essays, shorter notes, and a native
-newsletter. The aesthetic is **futuristic dark-luxury minimalism**: a deep
-cosmic void, warm ivory reading surfaces, and champagne-gold used like fine
-jewellery — thin lines, hairline rules, refined highlights, never flashy.
+A design and front-end refresh concept for **circlehealth.co**, built as a
+production-grade **Next.js 15 (App Router, React Server Components)** site.
 
-> **Status:** production-ready front-end running on bundled sample content.
-> Connect Ghost (two env vars) to go fully self-serve. Nothing about the
-> pages, components, or styling changes when you switch backends.
+Circle Health puts a team of AI assistants inside the EMR — **Charting,
+Authorization, Review, and Claims** — so behavioral health teams reduce
+denials, protect revenue, and give clinicians their time back. This refresh
+reframes the site around that story with a clean, trustworthy "clinical calm"
+design system and a clear, conversion-focused information architecture.
+
+> **Status:** self-contained demo. Builds and runs with **zero configuration** —
+> Insights content is bundled markdown and the demo form runs in preview mode
+> (captured to logs). Connect Ghost and a delivery webhook to go fully live
+> without touching a single page or component. Copy is illustrative, drawn from
+> public information about Circle Health, for client review.
 
 ---
 
@@ -21,91 +26,44 @@ npm run build && npm start
 npm run typecheck    # strict TS, no emit
 ```
 
-With **no** environment variables set, the site serves the bundled markdown in
-`/content` and the forms run in "preview" mode (captured to server logs). This
-is intentional: the repo builds and demos with zero configuration.
+---
+
+## Pages
+
+| Route                     | Purpose                                                            |
+| ------------------------- | ----------------------------------------------------------------- |
+| `/`                       | Home — hero, trust strip, the four assistants, lifecycle, proof, standards, CTA |
+| `/platform`               | Platform overview — lifecycle + all four assistants in depth       |
+| `/platform/[assistant]`   | Product detail: `charting`, `authorization`, `review`, `claims`    |
+| `/security`               | Security & compliance — HIPAA posture, controls, standards         |
+| `/company`                | Mission, story, values, proof                                      |
+| `/insights`               | Thought-leadership blog (behavioral-health RCM), via the CMS layer |
+| `/insights/[slug]`        | Article reading view                                               |
+| `/demo`                   | Request-a-demo page with a working form (`POST /api/demo`)         |
+
+Plus SEO/infra routes: `sitemap.xml`, `robots.txt`, `feed.xml` (Insights RSS),
+generated `icon` and `opengraph-image`, and a `404`.
 
 ---
 
-## Pages (launch scope)
+## Design system — "clinical calm"
 
-| Route            | Purpose                                                        |
-| ---------------- | -------------------------------------------------------------- |
-| `/`              | Hero, latest essays, notes strip, prominent newsletter signup  |
-| `/essays`        | Long-form archive — **doubles as the newsletter archive**      |
-| `/essays/[slug]` | Essay reading view + subscribe CTA under every piece           |
-| `/notes`         | Shorter observations, fragments, rabbit holes                  |
-| `/notes/[slug]`  | Note view — supports text, image, **embedded video**           |
-| `/about`         | About (final copy supplied by client)                          |
-| `/work-with-me`  | Premium, simple enquiry form                                   |
-| `/subscribe`     | Persistent subscribe destination                               |
+Tokens live in `tailwind.config.ts`; component classes and reading typography
+in `src/app/globals.css`.
 
-**Subscribe** is a persistent CTA — in the nav, under every essay, in the
-footer, and on its own page.
-
-A **"Listen" (podcast)** section is *architected for but intentionally not
-built* — see [Future-proofing](#future-proofing-the-listen-section).
-
----
-
-## Recommended stack & why: **headless Ghost**
-
-The brief's preferred stack is the right call. **Ghost** is one owned backend
-for **content + email delivery + (later) paid membership**, which keeps the
-newsletter *part of the brand* rather than rented from a third party.
-
-- **Publishing (self-serve, no code):** the author writes and edits essays and
-  notes in **Ghost admin** — a clean, non-technical editor with drafts,
-  scheduling, images, and embeds. This Next.js front-end reads from Ghost's
-  **Content API**.
-- **Content mapping:** essays = Ghost posts tagged `essay`; notes = posts
-  tagged `note`. That's the only convention the author needs to know.
-- **Delivery:** publishing an essay in Ghost sends it to subscribers by email
-  from your own domain, and it appears here instantly via the revalidation
-  webhook. The archive on this site is canonical.
-- **Membership later:** Ghost Members powers free → paid tiers with no
-  re-platforming.
-
-**Alternative considered — CMS + dedicated ESP** (e.g. Sanity + Beehiiv/Kit):
-best-of-breed editing and email, but it splits content and audience across two
-systems, adds a sync surface, and complicates "the newsletter lives on the
-site." Recommended **only** if bespoke editorial layouts outweigh the
-simplicity of one backend. This codebase supports it too — set `ESP_*` instead
-of `GHOST_MEMBERS_*` (see below); the content layer would read from Sanity via
-a sibling adapter to `src/lib/content/ghost.ts`.
-
-### Connecting Ghost
-
-```bash
-# .env.local (and Vercel project settings)
-GHOST_URL=https://your-site.ghost.io
-GHOST_CONTENT_API_KEY=xxxxxxxxxxxxxxxxxxxxxx   # Ghost → Integrations → Content API
-```
-
-When both are present the site reads from Ghost automatically. Add a Ghost
-**webhook** (`post.published`, `post.edited`, `post.unpublished`) pointing at
-`POST /api/revalidate?secret=$REVALIDATE_SECRET` for instant updates; otherwise
-content refreshes on a 60-second ISR window.
-
----
-
-## Email deliverability (SPF / DKIM / DMARC)
-
-Reliable inboxing is a DNS + provider task, done once at the domain:
-
-1. **Sending domain** — configure Ghost (via its Mailgun integration) or your
-   ESP with a subdomain such as `mail.yourdomain.com`.
-2. **SPF** — TXT record authorising the provider's sending servers, e.g.
-   `v=spf1 include:mailgun.org ~all`.
-3. **DKIM** — add the provider's CNAME/TXT signing keys so mail is
-   cryptographically signed.
-4. **DMARC** — `_dmarc` TXT starting at `p=none` (monitor), tightening to
-   `p=quarantine` then `p=reject` once aligned:
-   `v=DMARC1; p=none; rua=mailto:dmarc@yourdomain.com`.
-5. Verify with the provider dashboard + a tool like mail-tester before launch.
-
-The site never sends mail itself; it hands the address to the owned system.
-`/api/subscribe` supports both Ghost Members and a generic ESP endpoint.
+- **Palette** — clean white/`mist` surfaces; deep teal-navy `ink #0A2A33` text;
+  a confident medical `teal #0E857A` as the brand; bright `aqua #1FB8A6` for the
+  "compliant / positive" moments (checks, highlights); `sky` as an occasional
+  secondary accent. The register is precise and reassuring — software a
+  clinician trusts with a chart.
+- **Type** — **Plus Jakarta Sans** (display) + **Inter** (body), self-hosted via
+  `next/font` for zero layout shift. Swap for a licensed brand family in
+  `src/app/layout.tsx` at handoff if desired.
+- **Motion** — Framer Motion via a single restrained `Reveal` (fade-up on
+  scroll into view); `prefers-reduced-motion` respected globally.
+- **The mark** — an open teal ring with a live aqua node ("the circle of care,
+  closed"), in `src/components/logo.tsx` and the generated favicon/OG. A
+  placeholder for the client's final logo.
 
 ---
 
@@ -115,99 +73,65 @@ The site never sends mail itself; it hands the address to the owned system.
 src/
 ├─ app/                      # App Router (RSC by default)
 │  ├─ page.tsx               # Home
-│  ├─ essays/ notes/         # archives + [slug] reading views
-│  ├─ about/ work-with-me/ subscribe/
+│  ├─ platform/              # overview + [assistant] detail pages
+│  ├─ security/ company/ demo/
+│  ├─ insights/              # blog list + [slug] reading view
 │  ├─ api/
-│  │  ├─ subscribe/          # → Ghost Members or ESP
-│  │  ├─ enquiry/            # → private webhook
+│  │  ├─ demo/               # → demo-request webhook (or preview log)
 │  │  └─ revalidate/         # ← Ghost webhook (on-demand ISR)
 │  ├─ sitemap.ts robots.ts feed.xml/   # SEO + RSS
 │  ├─ icon.tsx opengraph-image.tsx     # generated brand marks
 │  └─ globals.css            # design system + reading typography
-├─ components/               # header, footer, cards, forms, Reveal…
+├─ components/               # header, footer, hero visual, cards, forms, icons…
 └─ lib/
    ├─ site.ts                # brand config & nav (single source of truth)
-   └─ content/               # ← the swappable content layer
+   ├─ platform.ts            # the product model — assistants, lifecycle, proof
+   └─ content/               # swappable CMS layer for Insights
       ├─ types.ts            # ContentSource contract
       ├─ ghost.ts            # headless Ghost adapter
       ├─ local.ts            # bundled-markdown adapter (default)
       └─ index.ts            # picks backend from env
-content/                     # sample essays & notes (markdown)
+content/insights/            # sample Insights articles (markdown)
 ```
 
-**The content layer is the key design decision.** Every page reads through the
-`ContentSource` interface (`listPosts`, `getPost`, `getSlugs`), so the CMS is a
-runtime choice — local markdown today, Ghost in production, Sanity if ever
-needed — with **no page or component change**.
+**Two decisions worth calling out:**
 
-### Future-proofing: the "Listen" section
+1. **`src/lib/platform.ts` is the product's single source of truth.** The home
+   page, the platform page, and every `/platform/[assistant]` detail page read
+   the four assistants, the lifecycle, the proof points, and the standards from
+   this one file. Adding an assistant or editing a metric is a one-place change.
 
-Adding a podcast later is additive, not a rebuild:
-
-- New `Episode` type + `episodes` adapter methods alongside the existing ones.
-- `/listen` and `/listen/[slug]` routes reusing the same layout primitives.
-- An audio player component + a `/podcast.xml` route (RSS with `<enclosure>`
-  audio and iTunes tags) mirroring the existing `feed.xml`.
-- A nav entry in `src/lib/site.ts` — one line.
-
-Nothing in the current information architecture blocks it.
-
----
-
-## Design system
-
-Tokens live in `tailwind.config.ts`; reading typography in
-`src/app/globals.css`.
-
-- **Palette** — `void #050506` · `obsidian` · `onyx` surfaces; `ivory #f4efe6`
-  / `cream` text; `champagne #d8bd8a` / `gold #c9a86a` accents. Colour & finish
-  follow this brief; the supplied brand deck governs structure, voice, and
-  typographic feel.
-- **Type** — display serif **Fraunces** (opsz) + grotesque **Inter**, loaded
-  via `next/font` (self-hosted, zero layout shift). These are high-quality
-  stand-ins; swap for the licensed families you purchase (see below).
-- **Motion** — Framer Motion: a single restrained fade-up (`Reveal`),
-  reduced-motion respected globally.
-- **The gold rule** (`.rule-gold`) and hairline borders are the recurring
-  "jewellery" motif — thin, warm, and sparing.
-
-### Recommended premium typefaces (client licenses)
-
-Any of these deliver the intended finish; drop the licensed webfonts into
-`next/font/local` and update the two families in `src/app/layout.tsx`:
-
-- **Display serif:** GT Sectra · Canela · Reckless · Ogg
-- **Grotesque UI:** Söhne · Neue Haas Grotesk · GT America
+2. **The content layer makes the CMS a runtime choice.** Insights read through a
+   `ContentSource` interface (`listPosts`, `getPost`, `getSlugs`), so the backend
+   is swappable — bundled markdown today, headless Ghost in production — with **no
+   page or component change**. Set `GHOST_URL` + `GHOST_CONTENT_API_KEY` and the
+   site reads from Ghost (posts tagged `insight`); add a Ghost webhook →
+   `/api/revalidate` for instant updates.
 
 ---
 
 ## Performance, SEO & accessibility
 
-- Server Components + static generation; per-post ISR (`revalidate = 60`).
-- `next/font` self-hosting, `next/image` (AVIF/WebP), minimal client JS.
-- Per-page metadata, Open Graph, `sitemap.xml`, `robots.txt`, RSS, and
-  JSON-LD `Article` schema on essays.
-- Semantic landmarks, skip-link, visible focus rings, labelled forms,
-  `prefers-reduced-motion`, WCAG-AA contrast on the dark palette.
-- Security headers set in `next.config.mjs`; markdown/embeds sanitised
-  (`rehype-sanitize`) with an allowlist for video iframes.
-
-**Target:** Lighthouse 90+ (Performance, SEO, Best Practices, Accessibility)
-on Home and a representative essay. Run against a production build:
-`npm run build && npm start`, then Lighthouse `http://localhost:3000`.
+- Server Components + static generation; per-article ISR (`revalidate = 60`).
+- `next/font` self-hosting, minimal client JS (only the header, `Reveal`, and
+  the demo form are client components).
+- Per-page metadata, Open Graph, `sitemap.xml`, `robots.txt`, Insights RSS, and
+  JSON-LD `Article` schema on Insights.
+- Semantic landmarks, skip-link, visible focus rings, labelled form fields,
+  honeypot spam protection, `prefers-reduced-motion`, and WCAG-AA-minded
+  contrast on the light palette.
+- Security headers set in `next.config.mjs`; markdown sanitised
+  (`rehype-sanitize`).
 
 ---
 
 ## Deploy to Vercel
 
-1. Push this repo (client owns it) and import into Vercel.
-2. Set env vars from `.env.example` (at minimum `NEXT_PUBLIC_SITE_URL`; add the
-   `GHOST_*` vars to go live on content + email).
-3. Add the custom domain; configure the email DNS records above.
-4. Add the Ghost `post.*` webhook → `/api/revalidate`.
-
-Zero-config build: `next build`. No serverless surprises — content APIs are
-cached at the edge.
+1. Push this repo and import into Vercel (zero-config `next build`).
+2. Set `NEXT_PUBLIC_SITE_URL` (see `.env.example`).
+3. Point the demo form at your CRM/inbox by setting `DEMO_WEBHOOK_URL`.
+4. (Optional) Connect Ghost for self-serve Insights: set `GHOST_*`, add a
+   `post.*` webhook → `/api/revalidate`.
 
 ---
 
@@ -215,33 +139,22 @@ cached at the edge.
 
 See [`.env.example`](./.env.example). Summary:
 
-| Variable                         | Purpose                                   |
-| -------------------------------- | ----------------------------------------- |
-| `NEXT_PUBLIC_SITE_URL`           | Canonical URL for SEO/OG/sitemap/RSS      |
-| `GHOST_URL`, `GHOST_CONTENT_API_KEY` | Read content from headless Ghost      |
-| `GHOST_MEMBERS_INTEGRATION_URL`  | Newsletter signups → Ghost Members        |
-| `ESP_SUBSCRIBE_URL`, `ESP_API_KEY` | Newsletter signups → dedicated ESP      |
-| `REVALIDATE_SECRET`              | Secures the Ghost → Next revalidate hook  |
-| `ENQUIRY_WEBHOOK_URL`            | Delivers "Work With Me" enquiries         |
+| Variable                              | Purpose                                      |
+| ------------------------------------- | -------------------------------------------- |
+| `NEXT_PUBLIC_SITE_URL`                | Canonical URL for SEO/OG/sitemap/RSS         |
+| `GHOST_URL`, `GHOST_CONTENT_API_KEY`  | Read Insights from headless Ghost (optional) |
+| `REVALIDATE_SECRET`                   | Secures the Ghost → Next revalidate hook     |
+| `DEMO_WEBHOOK_URL`                    | Delivers demo requests from `/demo`          |
 
 ---
 
-## Proposal summary (per the brief)
+## Notes for handoff
 
-- **Stack:** headless **Ghost** — one owned backend for content, email, and
-  future paid membership; custom Next.js front-end over the Content API.
-- **Self-serve publishing:** author works entirely in Ghost admin; the site
-  reads via the content layer and revalidates on a webhook.
-- **Deliverability:** SPF, DKIM, and DMARC configured on the sending domain
-  (see above), verified before launch.
-- **Aesthetic in one line:** a deep cosmic void and warm ivory prose, with a
-  single champagne hairline doing the work a gilded surface never could —
-  luxury as restraint, not decoration.
-- **Biggest timeline risk:** email deliverability & DNS/domain access sit
-  outside the codebase and gate launch. Managed by requesting registrar/DNS
-  access at kickoff, standing up SPF/DKIM/DMARC in week one against a staging
-  send, and starting DMARC at `p=none` so warm-up runs in parallel with build
-  rather than blocking launch.
-- **Realistic timeline:** ~6–8 weeks — Week 1 setup + Ghost/DNS, Weeks 2–3
-  design sign-off, Weeks 4–6 build, Weeks 7–8 content load, QA, Lighthouse,
-  cross-browser, handoff + walkthrough video.
+- **Content** — all product copy lives in `src/lib/platform.ts` and page files;
+  Insights live in `content/insights/*.md`. Customer names and quotes are public
+  references / illustrative and should be confirmed before launch.
+- **Logo & type** — the SVG mark and font pairing are high-quality placeholders;
+  drop in the client's final brand assets in `src/components/logo.tsx` and
+  `src/app/layout.tsx`.
+- **Screenshots** — the hero product visual (`src/components/hero-visual.tsx`) is
+  a pure-CSS mock; swap for a real (de-identified) product screenshot at launch.

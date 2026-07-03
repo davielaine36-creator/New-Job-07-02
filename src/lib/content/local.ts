@@ -11,7 +11,7 @@ import type {
 /**
  * Local markdown backend.
  *
- * Ships sample essays and notes so the site builds and renders with zero
+ * Ships sample Insights articles so the site builds and renders with zero
  * external services. It is also the reference implementation for the
  * content contract: when Ghost is connected this file is bypassed.
  *
@@ -21,9 +21,9 @@ import type {
  *   title: "…"
  *   excerpt: "…"
  *   publishedAt: "2026-06-01"
- *   readingTime: 9
- *   tags: ["culture", "technology"]
- *   featureImage: { url: "…", alt: "…" }
+ *   readingTime: 6
+ *   tags: ["denials", "compliance"]
+ *   author: { name: "…", role: "…" }
  *   ---
  */
 

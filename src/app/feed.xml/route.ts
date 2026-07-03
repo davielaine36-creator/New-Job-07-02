@@ -2,9 +2,8 @@ import { content } from "@/lib/content";
 import { site } from "@/lib/site";
 
 /**
- * RSS feed for the essays / newsletter archive. Also the natural place a
- * future "Listen" podcast feed will sit alongside (a separate
- * /podcast.xml with <enclosure> audio + iTunes tags).
+ * RSS feed for Insights — the publishing surface a non-technical author
+ * updates in the CMS. Kept in sync automatically via the content layer.
  */
 export const revalidate = 300;
 
@@ -17,15 +16,15 @@ function escape(s: string) {
 }
 
 export async function GET() {
-  const essays = await content.listPosts("essay", 50);
+  const insights = await content.listPosts("insight", 50);
 
-  const items = essays
+  const items = insights
     .map(
       (p) => `
     <item>
       <title>${escape(p.title)}</title>
-      <link>${site.url}/essays/${p.slug}</link>
-      <guid isPermaLink="true">${site.url}/essays/${p.slug}</guid>
+      <link>${site.url}/insights/${p.slug}</link>
+      <guid isPermaLink="true">${site.url}/insights/${p.slug}</guid>
       <pubDate>${new Date(p.publishedAt).toUTCString()}</pubDate>
       <description>${escape(p.excerpt)}</description>
     </item>`
@@ -35,7 +34,7 @@ export async function GET() {
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>${escape(site.name)} — Essays</title>
+    <title>${escape(site.name)} — Insights</title>
     <link>${site.url}</link>
     <description>${escape(site.description)}</description>
     <language>en</language>

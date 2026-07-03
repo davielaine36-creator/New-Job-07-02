@@ -46,7 +46,7 @@ export function PostBody({ post }: { post: Post }) {
   if (post.format === "html") {
     return (
       <div
-        className="prose-lux"
+        className="prose-ch"
         // Ghost returns pre-sanitised HTML from a trusted, owned CMS.
         dangerouslySetInnerHTML={{ __html: post.body }}
       />
@@ -54,7 +54,7 @@ export function PostBody({ post }: { post: Post }) {
   }
 
   return (
-    <div className="prose-lux">
+    <div className="prose-ch">
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
         rehypePlugins={[rehypeRaw, [rehypeSanitize, schema]]}

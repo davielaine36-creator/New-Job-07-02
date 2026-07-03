@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Fraunces, Inter } from "next/font/google";
+import { Plus_Jakarta_Sans, Inter } from "next/font/google";
 import { site } from "@/lib/site";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
@@ -7,19 +7,17 @@ import "./globals.css";
 
 /**
  * Typefaces.
- *
- * Shipped stand-ins chosen to evoke the intended finish:
- *   - Fraunces  → an "old-style" display serif with optical sizing and a
- *     confident, editorial character (stand-in for GT Sectra / Canela).
- *   - Inter     → a neutral, precise grotesque for UI and metadata
- *     (stand-in for Söhne / Neue Haas Grotesk).
- * Swap `next/font/local` for the licensed families at handoff — see README.
+ *   - Plus Jakarta Sans → a modern humanist display sans: friendly, precise,
+ *     and credible — the right register for clinical software.
+ *   - Inter             → a neutral workhorse for body copy and UI.
+ * Both are self-hosted via next/font (zero layout shift). Swap for a licensed
+ * brand family at handoff if desired — see README.
  */
-const display = Fraunces({
+const display = Plus_Jakarta_Sans({
   subsets: ["latin"],
   variable: "--font-display",
   display: "swap",
-  axes: ["opsz", "SOFT", "WONK"],
+  weight: ["500", "600", "700", "800"],
 });
 
 const sans = Inter({
@@ -51,15 +49,14 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/",
     types: {
-      // Essays double as the newsletter archive; expose a feed.
       "application/rss+xml": `${site.url}/feed.xml`,
     },
   },
 };
 
 export const viewport: Viewport = {
-  themeColor: "#0c0b0a",
-  colorScheme: "dark",
+  themeColor: "#0A5F57",
+  colorScheme: "light",
 };
 
 export default function RootLayout({
@@ -69,10 +66,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${display.variable} ${sans.variable}`}>
-      <body className="min-h-screen flex flex-col">
+      <body className="min-h-screen flex flex-col bg-canvas">
         <a
           href="#main"
-          className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-4 focus:left-4 focus:btn-gold"
+          className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-4 focus:left-4 focus:btn-primary"
         >
           Skip to content
         </a>
