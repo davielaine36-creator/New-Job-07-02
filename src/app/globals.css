@@ -76,7 +76,24 @@
     @apply rounded-2xl border border-line bg-white shadow-soft;
   }
   .card-hover {
-    @apply transition-all duration-500 ease-soft hover:-translate-y-1 hover:shadow-card;
+    @apply transition-all duration-500 ease-soft hover:-translate-y-1 hover:border-teal/40 hover:shadow-card;
+  }
+
+  /* Gradient icon tile — the recurring "product" motif on features. */
+  .icon-tile {
+    @apply inline-flex h-12 w-12 items-center justify-center rounded-xl text-white;
+    background: linear-gradient(135deg, #0e857a 0%, #0a5f57 100%);
+    box-shadow: 0 6px 16px -6px rgba(14, 133, 122, 0.5);
+  }
+  .icon-tile-lg {
+    @apply inline-flex h-14 w-14 items-center justify-center rounded-2xl text-white;
+    background: linear-gradient(135deg, #0e857a 0%, #0a5f57 100%);
+    box-shadow: 0 8px 20px -6px rgba(14, 133, 122, 0.5);
+  }
+
+  /* Floating stat/badge card that overlaps hero visuals for depth. */
+  .badge-float {
+    @apply flex items-center gap-3 rounded-2xl border border-line bg-white/95 px-4 py-3 shadow-float backdrop-blur;
   }
 
   /* ── Links ────────────────────────────────────────────────── */
@@ -114,6 +131,22 @@
   .bg-dotgrid {
     background-image: radial-gradient(rgba(10, 42, 51, 0.08) 1px, transparent 1px);
     background-size: 22px 22px;
+  }
+  /* Faint line grid for hero backdrops. */
+  .bg-linegrid {
+    background-image:
+      linear-gradient(to right, rgba(10, 42, 51, 0.045) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(10, 42, 51, 0.045) 1px, transparent 1px);
+    background-size: 56px 56px;
+    -webkit-mask-image: radial-gradient(80% 60% at 50% 25%, #000 0%, transparent 80%);
+    mask-image: radial-gradient(80% 60% at 50% 25%, #000 0%, transparent 80%);
+  }
+  /* Soft aurora for dark sections. */
+  .bg-mesh-dark {
+    background:
+      radial-gradient(50% 60% at 12% 0%, rgba(31, 184, 166, 0.20) 0%, transparent 55%),
+      radial-gradient(45% 55% at 90% 20%, rgba(46, 119, 201, 0.16) 0%, transparent 55%),
+      linear-gradient(160deg, #0b2b30 0%, #072024 100%);
   }
 }
 

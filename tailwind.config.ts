@@ -66,6 +66,9 @@ const config: Config = {
         soft: "0 1px 2px rgba(10, 42, 51, 0.04), 0 6px 20px -12px rgba(10, 42, 51, 0.12)",
         card: "0 2px 6px rgba(10, 42, 51, 0.05), 0 18px 40px -24px rgba(10, 42, 51, 0.18)",
         lift: "0 8px 24px -8px rgba(14, 133, 122, 0.28)",
+        float:
+          "0 4px 12px rgba(10, 42, 51, 0.06), 0 30px 60px -28px rgba(10, 42, 51, 0.30)",
+        glow: "0 0 0 1px rgba(31,184,166,0.12), 0 24px 70px -30px rgba(31, 184, 166, 0.55)",
       },
       transitionTimingFunction: {
         soft: "cubic-bezier(0.22, 1, 0.36, 1)",
