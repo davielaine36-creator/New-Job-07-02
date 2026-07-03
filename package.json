@@ -1,8 +1,8 @@
 {
-  "name": "circle-health-refresh",
+  "name": "ai-work-radar",
   "version": "0.1.0",
   "private": true,
-  "description": "Circle Health website refresh — AI assistants for behavioral health UR & QA. Next.js 15 (App Router).",
+  "description": "AI Work Radar — autonomous, compliance-guarded client-acquisition factory for local service businesses. Next.js 15 (App Router).",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
