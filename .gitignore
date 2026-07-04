@@ -34,3 +34,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# AI Work Radar — local mock database (file-persisted mock store)
+/.radar-data
